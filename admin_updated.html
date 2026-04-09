@@ -68,6 +68,27 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 .main-container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+
+/* Footer */
+.site-footer {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.75rem 2rem;
+  margin-top: 2rem;
+}
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  text-align: center;
+}
+.footer-item {
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
 .stats-section-label { font-size: 0.78rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.6rem; margin-top: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
 .stats-section-label:first-child { margin-top: 0; }
 .stats-section-label::after { content: ''; flex: 1; height: 1px; background: #e2e5eb; }
@@ -133,8 +154,8 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
 .card { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); overflow: hidden; margin-bottom: 1.5rem; }
 .card-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem 1.5rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
 .card-header-sm { font-size: 0.8rem; opacity: 0.85; }
-.card-header-btn { background: rgba(255,255,255,0.2); color: white; border: none; padding: 0.35rem 0.85rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: background 0.2s; font-family: inherit; }
-.card-header-btn:hover { background: rgba(255,255,255,0.35); }
+.card-header-btn { background: #ffffff; color: #667eea; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 700; transition: all 0.2s; font-family: inherit; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.card-header-btn:hover { background: #f0f4ff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102,126,234,0.3); }
 .card-content { padding: 1.5rem; }
 .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
 .grid-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
@@ -474,13 +495,13 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
   .logo-section { flex: 0 0 auto !important; display: flex !important; align-items: center !important; margin-left: -40px; gap: 0.25rem; }
   .logo { font-size: 2rem; }
   .system-title { font-size: 1rem; }
-  .user-section { flex-direction: row; gap: 0.5rem; width: auto; align-items: center; margin-right: -35px; }
+  .user-section { flex-direction: row; gap: 0.75rem; width: auto; align-items: center; margin-right: -35px; }
   .user-info { display: none; }
   .firebase-status { display: none; }
   .logout-btn { display: none; }
   #headerProfileAvatar { display: flex !important; cursor: pointer; }
   .hamburger-btn { display: flex !important; }
-  .mobile-drawer { display: block; }
+  .mobile-drawer { display: block; width: 230px; right: -230px; }
   .nav-tabs-inner { overflow-x: auto; flex-wrap: nowrap; padding: 0 1rem; -webkit-overflow-scrolling: touch; }
   .nav-tab { flex-shrink: 0; padding: 0.8rem 1rem; font-size: 0.85rem; min-height: 44px; }
   .nav-tabs-bar { position: static; }
@@ -502,16 +523,17 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
   .admin-table { font-size: 0.55rem; }
   .admin-table thead th { padding: 0.4rem 0.2rem; font-size: 0.5rem; min-height: 36px; }
   .admin-table td { padding: 0.4rem 0.2rem; font-size: 0.52rem; min-height: 36px; }
-  .admin-table td.username-cell { font-size: 0.55rem; }
+  .admin-table td.username-cell { font-size: 0.5rem; }
+  .u-name { font-size: 0.75rem; }
   .admin-table td:nth-child(3) { min-width: 90px; }
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; width: 100%; }
   
-  .pagination-wrapper { flex-direction: column; gap: 0.75rem; padding: 0.75rem; }
-  .pagination-controls { flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
-  .pagination-info { text-align: center; font-size: 0.8rem; }
-  .pagination-btn { padding: 0.5rem 0.75rem; min-height: 36px; font-size: 0.8rem; }
-  .pagination-number { padding: 0.5rem 0.6rem; min-height: 36px; min-width: 36px; font-size: 0.8rem; }
-  .pagination-select { padding: 0.5rem 0.6rem; min-height: 36px; font-size: 0.8rem; }
+  .pagination-wrapper { flex-direction: column; gap: 0.5rem; padding: 0.5rem; }
+  .pagination-controls { flex-wrap: wrap; justify-content: center; gap: 0.4rem; }
+  .pagination-info { text-align: center; font-size: 0.7rem; }
+  .pagination-btn { padding: 0.4rem 0.6rem; min-height: 32px; font-size: 0.7rem; }
+  .pagination-number { padding: 0.4rem 0.5rem; min-height: 32px; min-width: 32px; font-size: 0.7rem; }
+  .pagination-select { padding: 0.4rem 0.5rem; min-height: 32px; font-size: 0.7rem; }
   
   .card { border-radius: 12px; margin-bottom: 1rem; }
   .card-header { padding: 0.75rem 0.75rem; font-size: 0.8rem; }
@@ -568,6 +590,16 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
     width: 95%;
     margin: 1rem auto;
   }
+  .site-footer {
+    padding: 0.6rem 0.75rem;
+    margin-top: 1.5rem;
+  }
+  .footer-content {
+    gap: 0.2rem;
+  }
+  .footer-item {
+    font-size: 0.7rem;
+  }
   .hamburger-btn { display: flex !important; }
   .nav-tab { padding: 0.6rem 0.75rem; font-size: 0.75rem; min-height: 40px; }
   .nav-tabs-inner { padding: 0 0.5rem; }
@@ -593,14 +625,15 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
   .admin-table { font-size: 0.55rem; }
   .admin-table thead th { padding: 0.4rem 0.2rem; font-size: 0.5rem; min-height: 36px; }
   .admin-table td { padding: 0.4rem 0.2rem; font-size: 0.52rem; min-height: 36px; }
-  .admin-table td.username-cell { font-size: 0.55rem; }
+  .admin-table td.username-cell { font-size: 0.5rem; }
+  .u-name { font-size: 0.55rem; }
   .admin-table td:nth-child(3) { min-width: 90px; }
   
-  .pagination-wrapper { padding: 0.5rem; }
-  .pagination-info { font-size: 0.75rem; }
-  .pagination-btn { padding: 0.4rem 0.6rem; min-height: 32px; font-size: 0.75rem; }
-  .pagination-number { padding: 0.4rem 0.5rem; min-height: 32px; min-width: 32px; font-size: 0.75rem; }
-  .pagination-select { padding: 0.4rem 0.5rem; min-height: 32px; font-size: 0.75rem; }
+  .pagination-wrapper { padding: 0.25rem; }
+  .pagination-info { font-size: 0.65rem; }
+  .pagination-btn { padding: 0.25rem 0.4rem; min-height: 24px; font-size: 0.65rem; }
+  .pagination-number { padding: 0.25rem 0.35rem; min-height: 24px; min-width: 24px; font-size: 0.65rem; }
+  .pagination-select { padding: 0.25rem 0.35rem; min-height: 24px; font-size: 0.65rem; }
   
   .card-header { padding: 0.75rem; font-size: 0.85rem; }
   .card-content { padding: 0.75rem; }
@@ -901,8 +934,8 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
   transform: translateY(-50%);
   font-size: 0.95rem;
   pointer-events: none;
-  opacity: 0.6;
-  color: #666;
+  opacity: 1;
+  color: #667eea;
 }
 .auth-toggle-password {
   position: absolute;
@@ -935,8 +968,8 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
 .auth-field input::placeholder { color: #999; }
 .auth-field input:focus {
   background: rgba(255,255,255,0.95);
-  border-color: #dc267f;
-  box-shadow: 0 0 0 3px rgba(220,38,127,0.12), 0 0 20px rgba(220,38,127,0.08);
+  border-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.12), 0 0 20px rgba(34,197,94,0.08);
   color: #333;
 }
 .auth-field input.error {
@@ -1135,7 +1168,7 @@ body.authenticated .header { display:block !important; }
     <div class="auth-hero">
       <span class="auth-crab">🦀</span>
       <div class="auth-hero-title">Crab Monitoring System</div>
-      <div class="auth-hero-sub">Admin Control Panel</div>
+      <div class="auth-hero-sub">Admin</div>
     </div>
         <div class="auth-panel active" id="panelLogin">
       <div class="auth-error-msg" id="loginMsg"></div>
@@ -1157,7 +1190,7 @@ body.authenticated .header { display:block !important; }
       <div style="text-align:right;margin-bottom:1.1rem;margin-top:-0.4rem;">
         <a style="font-size:0.78rem;color:#a5b4fc;font-weight:500;cursor:pointer;letter-spacing:0.01em;" onclick="switchAuthTab('forgot')">Forgot password?</a>
       </div>
-      <button class="auth-submit" id="loginBtn" onclick="doLogin()">🔐 Sign In to Dashboard</button>
+      <button class="auth-submit" id="loginBtn" onclick="doLogin()">🔐 Log in</button>
     </div>
     <div class="auth-panel" id="panelRegister" style="display:none!important;">
       <div class="auth-error-msg" id="registerMsg"></div>
@@ -1341,6 +1374,14 @@ body.authenticated .header { display:block !important; }
 
 </main>
 
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-content">
+    <div class="footer-item">©2026 Crab Monitoring System</div>
+    <div class="footer-item">All rights reserved.</div>
+  </div>
+</footer>
+
 <!-- PROFILE MODAL -->
 <div id="profileModal" class="modal">
   <div class="modal-content">
@@ -1359,7 +1400,7 @@ body.authenticated .header { display:block !important; }
         </div>
       </div>
       <div style="background:#f8f9fb;border:1px solid #e1e1e1;border-radius:10px;padding:1rem;margin-bottom:1.25rem;">
-        <div style="font-size:0.78rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:0.6rem;">📷 Profile Picture (Auto-saved)</div>
+        <div style="font-size:0.78rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:0.6rem;">📷 Profile Picture</div>
         <input type="file" id="profilePictureInput" accept="image/*" style="display:none;" onchange="handleProfilePictureUpload(event)">
         <button class="btn btn-secondary" style="padding:0.5rem 1rem;font-size:0.85rem;" onclick="document.getElementById('profilePictureInput').click()">Choose Image</button>
         <div id="uploadProgress" style="display:none;margin-top:0.5rem;font-size:0.8rem;color:#667eea;">Processing...</div>
@@ -1369,7 +1410,7 @@ body.authenticated .header { display:block !important; }
         </div>
       </div>
       <div id="profileMsg" style="display:none;padding:0.6rem 0.9rem;border-radius:8px;font-size:0.82rem;margin-bottom:1rem;"></div>
-      <div class="form-group"><label>Display Name (Click Save to apply)</label><input type="text" id="settingName" placeholder="Your full name"></div>
+      <div class="form-group"><label>Display Name</label><input type="text" id="settingName" placeholder="Your full name"></div>
       <div class="form-group"><label>Username</label><input type="text" id="settingUsername" readonly style="background:#f8f9fa;color:#888;"></div>
       <div class="form-group"><label>Role</label><input type="text" id="settingRole" readonly style="background:#f8f9fa;color:#888;"></div>
     </div>
@@ -2350,7 +2391,12 @@ window.saveNewUser=async()=>{
   const{db,ref,push,get}=window._fb;
   try{
     const snap=await get(ref(db,'users'));
-    if(snap.exists()){const ex=Object.values(snap.val());if(ex.find(u=>u.username===username)){showToast('Username already taken','error');return;}}
+    if(snap.exists()){
+      const ex=Object.values(snap.val());
+      if(ex.find(u=>u.username===username)){showToast('Username already taken','error');return;}
+      // Check if monitor role is already taken
+      if(role.startsWith('monitor') && ex.find(u=>u.role===role)){showToast(`Monitor role "${role}" is already taken by another user`,'error');return;}
+    }
     await push(ref(db,'users'),{name,username,password,role,createdAt:Date.now()});
     showToast(`✅ User "${username}" created!`,'success');
     closeModal('addUserModal');
@@ -2626,6 +2672,39 @@ window.removeProfilePicture=async()=>{
 
 const _origOpenModal=window.openModal;
 window.openModal=(id)=>{
+  if(id==='addUserModal'){
+    // Check which monitor roles are already taken and disable them
+    const roleSelect=document.getElementById('newUserRole');
+    if(roleSelect){
+      const applyRoleRestrictions=async()=>{
+        let users=window._users||[];
+        // If users not loaded yet, fetch from Firebase
+        if(users.length===0 && window._fb){
+          try{
+            const{db,ref,get}=window._fb;
+            const snap=await get(ref(db,'users'));
+            if(snap.exists()){
+              users=Object.entries(snap.val()).map(([id,v])=>({id,...v}));
+            }
+          }catch(e){
+            console.error('Error fetching users:',e);
+          }
+        }
+        const takenRoles=users.filter(u=>u.role && u.role.startsWith('monitor')).map(u=>u.role);
+        const options=roleSelect.querySelectorAll('option');
+        options.forEach(opt=>{
+          if(opt.value.startsWith('monitor') && takenRoles.includes(opt.value)){
+            opt.disabled=true;
+            opt.textContent=opt.textContent+' (Taken)';
+          }else if(opt.value.startsWith('monitor')){
+            opt.disabled=false;
+            opt.textContent=opt.textContent.replace(' (Taken)','');
+          }
+        });
+      };
+      applyRoleRestrictions();
+    }
+  }
   if(id==='profileModal'){
     try{
       const s=JSON.parse(sessionStorage.getItem('crabMonitoringSession')||'{}');
