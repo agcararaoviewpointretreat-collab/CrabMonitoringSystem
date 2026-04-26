@@ -1351,18 +1351,18 @@ body.authenticated .header { display:block !important; }
     </div>
 
     <!-- INVENTORY SUMMARY -->
-    <div class="stats-section-label">📊 Summary of Inventory</div>
+    <div class="stats-section-label">📊 Generate Report</div>
     <div class="inventory-summary-card">
       <div class="inventory-form">
         <div class="inventory-form-row">
           <div class="inventory-field">
             <label>Report Type</label>
             <select id="invReportType">
-              <option value="all">All</option>
-              <option value="sold">Sold</option>
-              <option value="dead">Dead</option>
-              <option value="healthy">Healthy</option>
-              <option value="readytosell">Ready to Sell</option>
+              <option value="all">📋 All</option>
+              <option value="sold">🏷️ Sold</option>
+              <option value="dead">💀 Dead</option>
+              <option value="healthy">💚 Healthy</option>
+              <option value="readytosell">💰 Ready to Sell</option>
             </select>
           </div>
           <div class="inventory-field">
@@ -1398,7 +1398,7 @@ body.authenticated .header { display:block !important; }
             </select>
           </div>
           <div class="inventory-field inventory-btn-field">
-            <button class="btn btn-primary" onclick="generateInventorySummary()">Show Data</button>
+            <button class="btn btn-primary" onclick="generateInventorySummary()">👁️ Show Data</button>
           </div>
         </div>
       </div>
@@ -1782,7 +1782,7 @@ function doLogin(){
       window._fb.get(window._fb.ref(window._fb.db,'users')).then(snap=>{
         let found=false;
         if(snap.exists()){
-          Object.values(snap.val()).forEach(usr=>{
+          Object.entries(snap.val()).forEach(([key,usr])=>{
             if(usr.username===u&&usr.password===p){
               found=true;
               if(usr.role!=='admin'){
@@ -1790,7 +1790,7 @@ function doLogin(){
                 btn.disabled=false;btn.textContent='🔐 Login to Dashboard';
                 return;
               }
-              completeLogin({username:usr.username,name:usr.name||usr.username,role:usr.role||'viewer',avatarEmoji:usr.avatarEmoji,avatarColor:usr.avatarColor,profilePictureUrl:usr.profilePictureUrl});
+              completeLogin({username:usr.username,name:usr.name||usr.username,role:usr.role||'viewer',avatarEmoji:usr.avatarEmoji,avatarColor:usr.avatarColor,profilePictureUrl:usr.profilePictureUrl,_fbKey:key});
             }
           });
         }
@@ -1814,7 +1814,7 @@ function completeLogin(session){
     setTimeout(()=>{ if(window._applyAvatarToEl){ _applyAvatarToEl(document.getElementById('headerProfileAvatar'),session); } },800);
     setTimeout(()=>{ if(window._applyAvatarToEl){ _applyAvatarToEl(document.getElementById('profileAvatar'),session); } },800);
     // Mark user as logged in (Online) in Firebase - delay to ensure users are loaded
-    setTimeout(()=>{ _setLoginFlag(session.username, true); }, 1000);
+    setTimeout(()=>{ _setLoginFlag(session.username, true); setupAdminPresence(session); }, 1000);
     startHeartbeat();
     showToast('Welcome back, '+session.name+'! 🦀','success');
     if(typeof refreshOverview==='function') setTimeout(refreshOverview,500);
@@ -1996,12 +1996,12 @@ window.doLogout=()=>{
 <!-- FIREBASE + MAIN LOGIC -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-import { getDatabase, ref, set, push, onValue, get } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+import { getDatabase, ref, set, push, onValue, get, onDisconnect, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
 const FC={apiKey:"AIzaSyCL2YkjBwcQR642R9l0AXuX5ayczH2q1EM",authDomain:"crabmonitoringsystem-ab2ea.firebaseapp.com",databaseURL:"https://crabmonitoringsystem-ab2ea-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"crabmonitoringsystem-ab2ea",storageBucket:"crabmonitoringsystem-ab2ea.firebasestorage.app",messagingSenderId:"910140962027",appId:"1:910140962027:web:ec86956350b4ec28567aae"};
 const app=initializeApp(FC);
 const db=getDatabase(app);
-window._fb={db,ref,set,push,get};
+window._fb={db,ref,set,push,get,onDisconnect,serverTimestamp};
 
 onValue(ref(db,'.info/connected'),snap=>{
   const dot=document.getElementById('statusDot'),lbl=document.getElementById('statusLabel');
@@ -2035,7 +2035,7 @@ function deriveAction(c,isDeleted){
 }
 const ACTION_CONFIG={'Added':{icon:'➕',iconCls:'fi-added',badgeCls:'fab-added',label:'Added'},'Updated':{icon:'✏️',iconCls:'fi-updated',badgeCls:'fab-updated',label:'Updated'},'Dead':{icon:'💀',iconCls:'fi-dead',badgeCls:'fab-dead',label:'Dead'},'Ready to Sell':{icon:'💰',iconCls:'fi-sell',badgeCls:'fab-sell',label:'Ready to Sell'},'Sold':{icon:'🏷️',iconCls:'fi-sold',badgeCls:'fab-sold',label:'Sold'},'Removed':{icon:'🗑️',iconCls:'fi-removed',badgeCls:'fab-removed',label:'Removed'}};
 
-const ONLINE_THRESHOLD = 1800000; // 30 minutes - user is online if lastActive within this threshold
+const ONLINE_THRESHOLD = 1200000; // 20 minutes - user is online if lastActive within this threshold
 
 // Called whenever any data source updates — keeps Records and Top Contributors instant
 function reRenderAll(){
@@ -2058,10 +2058,14 @@ onValue(ref(db,'crabs'),snap=>{
   window._allCrabs=data?Object.entries(data).map(([id,v])=>({id,...v})):[];
   // Also maintain _crabs for compatibility with existing admin functions
   window._crabs = window._allCrabs;
-  refreshOverview();renderActivityFeed();
+  refreshOverview();renderActivityFeed();filterHistory();
   document.getElementById('lastUpdated').textContent=`Updated ${new Date().toLocaleTimeString()}`;
   // Immediately update Records count and Top Contributors when crab data arrives
   reRenderAll();
+  // Re-evaluate user online/offline status every minute based on local clock
+  if (!window._userStatusInterval) {
+    window._userStatusInterval = setInterval(() => { if (typeof renderUsers === 'function') renderUsers(); }, 60000);
+  }
 });
 onValue(ref(db,'deletedCrabs'),snap=>{
   const data=snap.val();
@@ -2430,7 +2434,8 @@ window.filterHistory=()=>{
     const addedBase = {...base, currentWeight: v.originWeight != null ? v.originWeight : v.currentWeight};
     events.push({...addedBase,_eventAction:'added',_eventTs:addedTs,_eventBy:v.addedBy||v.recordedBy||'—'});
     // Emit every update from updateHistory so 2nd, 3rd, 4th edits all appear
-    const uh = Array.isArray(v.updateHistory) ? v.updateHistory : [];
+    const uhRaw = v.updateHistory;
+    const uh = Array.isArray(uhRaw) ? uhRaw : (uhRaw ? Object.values(uhRaw) : []);
     if(uh.length){
       uh.forEach((entry)=>{
         const updateBase = {
@@ -2456,7 +2461,8 @@ window.filterHistory=()=>{
     const addedBase = {...base, currentWeight: v.originWeight != null ? v.originWeight : v.currentWeight};
     events.push({...addedBase,_eventAction:'added',_eventTs:addedTs,_eventBy:v.addedBy||v.recordedBy||'—'});
     // Update events from history
-    const uh = Array.isArray(v.updateHistory) ? v.updateHistory : [];
+    const uhRaw = v.updateHistory;
+    const uh = Array.isArray(uhRaw) ? uhRaw : (uhRaw ? Object.values(uhRaw) : []);
     if(uh.length){
       uh.forEach((entry, idx)=>{
         const updateBase = {
@@ -2550,9 +2556,10 @@ window.renderHistoryTable = () => {
     const badge=badgeMap[action]||badgeMap['added'];
     const actionLabel=action.charAt(0).toUpperCase()+action.slice(1);
 
-    // Actions column logic: Delete for sold/dead, Active for others
+    // Actions column logic: Delete for any event belonging to an archived crab, Active for live crabs
     let actionCell = '';
-    if (action === 'sold' || action === 'dead') {
+    const isDeletedCrab = (window._deletedCrabs||[]).some(d=>d.id===c.id);
+    if (isDeletedCrab) {
       actionCell = `<button class="tbl-btn danger" title="Permanently delete" onclick="confirmDeleteRecord('${c.id}','${c.boxNo||c.id}',true)" style="padding:0.18rem 0.5rem;font-size:0.7rem;margin:0;width:100%;">🗑 Delete</button>`;
     } else {
       actionCell = `<span style="display:inline-block;padding:0.15rem 0.5rem;border-radius:10px;font-size:0.68rem;font-weight:700;background:#d4edda;color:#155724;">● Active</span>`;
@@ -3352,7 +3359,7 @@ window.showToast=showToast;
 // ══ HEARTBEAT SYSTEM ══
 let _heartbeatInterval = null;
 const HEARTBEAT_INTERVAL = 30000;
-window.ONLINE_THRESHOLD = 999999999;
+// ONLINE_THRESHOLD is defined above (20 minutes)
 
 function startHeartbeat() {
   if (_heartbeatInterval) clearInterval(_heartbeatInterval);
@@ -3362,6 +3369,16 @@ function startHeartbeat() {
 
 function stopHeartbeat() {
   if (_heartbeatInterval) { clearInterval(_heartbeatInterval); _heartbeatInterval = null; }
+}
+
+let _disconnectSetupAdmin = false;
+function setupAdminPresence(s) {
+  if (!s._fbKey || s.username === 'admin' || _disconnectSetupAdmin || !window._fb) return;
+  try {
+    const userRef = window._fb.ref(window._fb.db, `users/${s._fbKey}`);
+    window._fb.onDisconnect(userRef).update({ isLoggedIn: false, lastActive: window._fb.serverTimestamp() });
+    _disconnectSetupAdmin = true;
+  } catch (e) {}
 }
 
 function updateLastActive() {
@@ -3374,6 +3391,7 @@ function updateLastActive() {
     sessionStorage.setItem('crabMonitoringSession', JSON.stringify(s));
     // Update lastActive + ensure isLoggedIn=true stays set while session is active
     if (window._fb && s.username && s.username !== 'admin') {
+      setupAdminPresence(s);
       const users = window._users || [];
       const matched = users.find(u => u.username === s.username);
       if (matched) {
